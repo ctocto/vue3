@@ -14,8 +14,8 @@ import { AddressEdit } from 'vant';
 import { Area } from 'vant';
 import { Popup } from 'vant';
 
-import axios from 'axios';
-import VueAxios from 'vue-axios';
+// import axios from 'axios';
+// import VueAxios from 'vue-axios';
 
 
 const app = createApp(App)
@@ -36,8 +36,8 @@ app.use(Popup);
 
 app.use(router);
 
-app.use(VueAxios);
-app.use(axios);
+// app.use(VueAxios, axios);
+// app.use(axios);
 
 app.mount('#app')
 
