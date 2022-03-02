@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const service = axios.create({
-    baseURL: "",
+    baseURL: "http://10.1.180.74:7001/",
     timeout: 5000,
     headers: {
         "Authorization": "Bearer " + localStorage.getItem("token"),

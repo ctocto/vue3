@@ -5,6 +5,11 @@ export function getUserApp(id) {
     return service.get('/getUserApp/' + id);
 }
 
+// addUser
+export function addUser(obj) {
+  return service.post('addUser', obj);
+}
+
 // 发起post请求，可以后跟params
 export function postSth(obj) {
     return service.post('/test', {

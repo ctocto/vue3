@@ -1,5 +1,5 @@
 <template>
-  <div class="pageTit">{{msg}}</div>
+  <div class="pageTit">个人信用业务初审系统</div>
   <van-form @submit="onSubmit">
     <van-cell-group>
       <van-field
@@ -10,7 +10,7 @@
         
       />
       <!-- :rules="[{ required: true, message: '请填写姓名' }]" -->
-      <van-field name="radio" label="性别">
+      <van-field name="sexChecked" label="性别">
         <template #input>
           <van-radio-group v-model="sexChecked" direction="horizontal" @change="sexCheckedHanle">
             <van-radio name="1">男</van-radio>
@@ -20,12 +20,12 @@
       </van-field>
 
       <van-field type="tel" label="手机号码"  placeholder="请输入手机号码"  name="tel" v-model="tel"/>
-      <van-field type="digit" label="运营商" placeholder="请输入运营商" name="operator" v-model="operator"/>
-      <van-field type="number" label="身份证" placeholder="请输入身份证" class="mb10" name="idCard" v-model="idCard"/>
+      <van-field label="运营商" placeholder="请输入运营商" name="operator" v-model="operator"/>
+      <van-field label="身份证" placeholder="请输入身份证" class="mb10" name="idCard" v-model="idCard"/>
       <van-field label="最高学历" placeholder="请输入最高学历" name="education" v-model="education"/>
       <!-- <van-field label="婚姻状况" placeholder="请输入婚姻状况" /> -->
 
-      <van-field name="radio" label="婚姻状况">
+      <van-field name="IsChecked" label="婚姻状况">
         <template #input>
           <van-radio-group v-model="IsChecked" direction="horizontal">
             <van-radio name="1">已婚</van-radio>
@@ -66,18 +66,18 @@
   
       <van-field label="贷款用途" placeholder="请输入贷款用途" name="loanPurpose" v-model="loanPurpose"/>
       <!-- <van-field label="配偶是否能知情" placeholder="请输入配偶是否能知情" /> -->
-      <van-field name="radio" label="配偶是否能知情">
+      <van-field name="SpouseIsChecked" label="配偶是否能知情">
         <template #input>
-          <van-radio-group v-model="IsChecked" direction="horizontal">
+          <van-radio-group v-model="SpouseIsChecked" direction="horizontal">
             <van-radio name="1">是</van-radio>
             <van-radio name="2">否</van-radio>
           </van-radio-group>
         </template>
       </van-field>
       <!-- <van-field label="单位是否能知情" placeholder="请输入单位是否能知情" /> -->
-      <van-field name="radio" label="单位是否能知情">
+      <van-field name="CompanyIsChecked" label="单位是否能知情">
         <template #input>
-          <van-radio-group v-model="IsChecked" direction="horizontal">
+          <van-radio-group v-model="CompanyIsChecked" direction="horizontal">
             <van-radio name="1">是</van-radio>
             <van-radio name="2">否</van-radio>
           </van-radio-group>
@@ -104,7 +104,7 @@ import { areaList } from '@vant/area-data';
 import router from '../router'
 import { useRoute, useRouter } from 'vue-router';
 
-import { getUserApp } from '../plugins/axios/api.js'; // 这里的路径是相对路径，使用时根据实际情况修改
+import { addUser } from '../plugins/axios/api.js'; // 这里的路径是相对路径，使用时根据实际情况修改
 import { getCurrentInstance } from 'vue'
 
 
@@ -122,12 +122,6 @@ export default {
   setup() {
 
     const { proxy } = getCurrentInstance();
-    getUserApp().then(res => {
-        console.log(res)
-      })
-        
-
-
     const route = useRoute()
     const router = useRouter()
 
@@ -147,6 +141,8 @@ export default {
     const loanPurpose = ref('');
     const applicationRecord = ref('');
     const creditInvestigation = ref('');
+    const CompanyIsChecked = ref('');
+    const SpouseIsChecked = ref('');
 
     const sexChecked = ref(false);
     const IsChecked = ref(false);
@@ -154,7 +150,7 @@ export default {
     const showArea = ref(false);
     const onConfirm = (areaValues) => {
       showArea.value = false;
-      result.value = areaValues
+      officeAddress.value = areaValues
         .filter((item) => !!item)
         .map((item) => item.name)
         .join('/');
@@ -162,20 +158,15 @@ export default {
 
      const onSubmit = (values) => {
       console.log('submit', values);
-
-      // router.push('/mainPage')
-      // axios.get('https://api.github.com/users')
-      //     .then(res=>{
-      //         this.dataList = res.data;
-      //     })
-      //     .catch(err=>{
-      //         console.log(err);
-      //     })
-      // Vue.axios.get('https://api.github.com/users').then((response) => {
-      //   console.log(response.data, "1111111111")
-      // })
-
-   
+      let valuesnew = {...{}, ...values}
+      delete valuesnew.undefined
+      addUser(valuesnew).then(res => {
+        if(res.code==200) {
+          router.push('/mainPage')
+        } else {
+          Toast.fail(res.data.message);
+        }
+      })
     };
 
     const sexCheckedHanle = (sexValue) =>{
@@ -210,6 +201,8 @@ export default {
       onSubmit,
 
       sexCheckedHanle,
+      CompanyIsChecked,
+      SpouseIsChecked,
     };
   },
 
