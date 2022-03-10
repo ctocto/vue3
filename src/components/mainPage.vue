@@ -2,8 +2,8 @@
   <div class="pageTit">初审结果</div>
   <div class="page">
     <img alt="Vue logo" src="../assets/default.png" />
-    <p class="text-style">您暂不符合贷款条件。</p>
-    <p class="text-style">错误代码：ES369</p>
+    <p class="text-style">{{msg}}</p>
+    <p class="text-style">错误代码：{{code}}</p>
     <van-row>
         <van-col span="12">
             <van-button type="default" style="width:90%" @click="onBack">取消</van-button>
@@ -18,7 +18,9 @@
 </template>
 
 <script>
+import { ref, inject } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { getUserInfo } from '../plugins/axios/api.js';
 export default {
   name: "mainPage",
   data() {
@@ -27,14 +29,36 @@ export default {
   },
 
   setup() {
+    // route.query.alert
     const route = useRoute()
     const router = useRouter()
+    console.log(router.currentRoute.value.query.tel, "1111111199999999999")
+
+    const msg = ref('正在等待审核结果')
+    const code = ref('ES00000')
+
+    setTimeout(()=>{
+      getUserInfo({
+        tel:router.currentRoute.value.query.tel
+      }).then(res => {
+        if(res.status==200) {
+          msg.value = res.data.data[0].msg
+          code.value = res.data.data[0].code
+        } else {
+          Toast.fail(res.data.data.message);
+        }
+        
+      })
+    }, 10000)
+    
     const onBack = (values) => {
       router.back()
     };
 
     return {
-      onBack
+      onBack,
+      msg,
+      code
     }
   }
 }

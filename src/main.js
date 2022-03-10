@@ -12,7 +12,7 @@ import { Form, Field, RadioGroup, Radio } from 'vant';
 
 import { AddressEdit } from 'vant';
 import { Area } from 'vant';
-import { Popup } from 'vant';
+import { Popup, Toast  } from 'vant';
 
 // import axios from 'axios';
 // import VueAxios from 'vue-axios';
@@ -32,7 +32,7 @@ app.use(RadioGroup);
 
 app.use(AddressEdit);
 app.use(Area);
-app.use(Popup);
+app.use(Popup, Toast);
 
 app.use(router);
 
