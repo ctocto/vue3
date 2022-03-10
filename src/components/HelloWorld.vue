@@ -152,7 +152,6 @@ export default {
     const result = ref('');
     const showArea = ref(false);
 
-Toast.fail('res.data.data.message');
     const onConfirm = (areaValues) => {
       showArea.value = false;
       officeAddress.value = areaValues
