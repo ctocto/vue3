@@ -1,0 +1,21 @@
+{
+  "name": "hello-vue3",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@vant/area-data": "^1.2.2",
+    "area-data": "^5.0.6",
+    "axios": "0.21.0",
+    "vant": "^3.4.5",
+    "vue": "^3.0.4",
+    "vue-axios": "^3.4.1"
+  },
+  "devDependencies": {
+    "@vue/compiler-sfc": "^3.0.4",
+    "vite": "^1.0.0-rc.13",
+    "vue-router": "^4.0.0-beta.3"
+  }
+}
